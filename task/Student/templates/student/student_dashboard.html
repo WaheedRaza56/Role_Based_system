@@ -1,0 +1,28 @@
+{% extends "student/base.html" %}
+
+{% block content %}
+
+    <div class="card">
+
+
+        <div class="card-body">
+            <h5 class="card-header bg-info text-white">Welcome {{ user.username }} to the student's dashboard!</h5>
+        </div>
+
+        <div class="form-group">
+            {% if lessons %}
+                {% for lesson in lessons %}
+                <a class="btn btn-primary mb-3 ms-3" href="{% url 'student:quiz_view' lesson.id %}">
+                    Attempt Quiz for "{{ lesson.title }}" by {{ lesson.teacher.username }}
+                </a>
+                {% endfor %}
+            {% else %}
+                <a class="ms-3 mb-3 btn btn-info">No lessons found....!</a>
+            {% endif %}
+    
+        </div>
+        
+
+    </div>
+
+{% endblock %}

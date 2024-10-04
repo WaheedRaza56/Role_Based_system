@@ -1,0 +1,44 @@
+{% extends 'adminpanel/base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Admin Dashboard</h2>
+
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h3>Users List</h3>
+        </div>
+        <div class="card-body">
+            {% if users %}
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.get_role_display }}</td>
+                                <td>
+                                    <a href="{% url 'adminpanel:update_user' user.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="{% url 'adminpanel:delete_user' user.pk %}" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No users found.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

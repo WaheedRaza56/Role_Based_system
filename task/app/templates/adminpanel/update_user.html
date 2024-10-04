@@ -1,0 +1,48 @@
+{% extends 'adminpanel/base.html' %}
+
+{% block title %}Update User{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header bg-info text-white">
+            <h2>Update User - {{ user.username }}</h2>
+        </div>
+        <div class="card-body">
+
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                {% csrf_token %}
+
+                {% for field in form %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+                        {{ field }}  
+
+                        {% if field.errors %}
+                            <div class="invalid-feedback">
+                                {% for error in field.errors %}
+                                    <p>{{ error }}</p>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        
+                    </div>
+                {% endfor %}
+
+                <button type="submit" class="btn btn-success">Update</button>
+                <a href="{% url 'adminpanel:admin_dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+            </form>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

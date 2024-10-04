@@ -1,0 +1,12 @@
+{% extends 'student/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Quiz Result for {{ lesson.title }}</h5>
+        <p>Your score: {{ score }}</p>
+    </div>
+    <a class="btn btn-secondary mb-3 mt-3 ms-3 me-3" href="{% url 'student:student_dashboard' %}">Back to student Dashboard</a>
+
+</div>
+{% endblock %}

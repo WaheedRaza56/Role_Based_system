@@ -1,0 +1,41 @@
+{% extends 'student/base.html' %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Student Dashboard</h5>
+
+        {% for lesson_quiz in lesson_quizzes %}
+            <div class="card mt-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ lesson_quiz.lesson.title }}</h5>
+
+                    {% if lesson_quiz.questions %}
+                        <ul class="list-group">
+                            {% for question in lesson_quiz.questions %}
+                                <li class="list-group-item">
+                                    <strong>{{ question.text }}</strong>
+                                    {% if question.id in lesson_quiz.answered_questions %}
+                                        <span class="badge badge-success">Answered</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">Pending</span>
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+
+                        {% if lesson_quiz.questions.count != lesson_quiz.answered_questions.count %}
+                            <a href="{% url 'student:quiz_view' lesson_quiz.lesson.id %}" class="btn btn-primary mt-3">Start/Continue Quiz</a>
+                        {% else %}
+                            <a href="{% url 'student:quiz_view' lesson_quiz.lesson.id %}" class="btn btn-secondary mt-3">Review Quiz</a>
+                        {% endif %}
+                    {% else %}
+                        <p>No questions available for this lesson.</p>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock %}

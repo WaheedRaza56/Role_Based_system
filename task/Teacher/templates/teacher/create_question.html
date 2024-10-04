@@ -1,0 +1,99 @@
+{% extends 'teacher/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Create Question</h5>
+            
+            <form method="post" id="questionForm">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    {{ form.text }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.question_type }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.lesson }}
+                </div>
+
+                <div class="mb-3">
+                    {{ form.correct_answer }}
+                </div>
+
+                <h6 class="mt-4">Add Choices</h6>
+
+                <hr>
+
+                {{ formset.management_form }}
+                
+                <div id="choices">
+
+                    {% for form in formset %}
+                        <div class="choice-form mb-3">
+                            <div class="row">
+                                <div class="col-md-8">
+                                    {{ form.text }}
+                                </div>
+                                <div class="col-md-4">
+                                    {{ form.is_correct }}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+                <button type="submit" class="btn btn-primary">Create Question</button>
+                <a class="btn btn-secondary ms-3" href="{% url 'teacher:teacher_dashboard' %}">Back to Teacher Dashboard</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () 
+    {
+        const questionTypeField = document.querySelector('#id_question_type');
+        const form = document.querySelector('#questionForm');
+        const choicesDiv = document.querySelector('#choices');
+        const choiceForms = Array.from(choicesDiv.querySelectorAll('.choice-form'));
+
+        function updateChoices() 
+        {
+            const questionType = questionTypeField.value;
+            let numChoices = 4;
+
+            if (questionType === 'TF') 
+            {
+                numChoices = 2;
+            }
+
+            choiceForms.forEach((choiceForm, index) => 
+            {
+                const inputs = choiceForm.querySelectorAll('input');
+                if (index < numChoices) 
+                {
+                    choiceForm.style.display = 'block';
+                    inputs.forEach(input => input.required = false);
+                } 
+                else 
+                {
+                    choiceForm.style.display = 'none';
+                    inputs.forEach(input => 
+                    {
+                        input.required = false;
+                        input.value = ''; 
+                    });
+                }
+            });
+        }
+
+        questionTypeField.addEventListener('change', updateChoices);
+        updateChoices();
+    });
+</script>
+{% endblock %}
